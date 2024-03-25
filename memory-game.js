@@ -42,24 +42,52 @@ function createCards(colors) {
   const gameBoard = document.querySelector("#game");
 
   for (let color of colors) {
-    // missing code here ...
+    //for each value in the color array, create a card (a div with class and event handler)
+
+    let card = document.createElement("div");
+    card.classList.add(`${color}`);
+    card.addEventListener("click", handleCardClick);
+
+    gameBoard.appendChild(card);
   }
 }
+
+/*
+Part Three: Implementing clicks and matches»
+
+Clicking a card should change the background color to be the color of the class it has.
+
+Users should only be able to change at most two cards at a time.
+
+Clicking on two matching cards should be a “match” — those cards should stay face up.
+
+When clicking two cards that are not a match, they should stay turned over for at least 1 second before they hide the color again.
+You should make sure to use a setTimeout so that you can execute code after one second.
+
+if a card is clicked on, set the background color of the card to the div class it has
+- how to reference the div class in javascript?
+*/
 
 /** Flip a card face-up. */
 
 function flipCard(card) {
-  // ... you need to write this ...
+  // set the background color to the div color
+  card.style.backgroundColor = card.className;
+
 }
 
 /** Flip a card face-down. */
 
 function unFlipCard(card) {
-  // ... you need to write this ...
+  // reset the background color to blank
+  card.style.backgroundColor = "transparent";
 }
 
 /** Handle clicking on a card: this could be first-card or second-card. */
 
 function handleCardClick(evt) {
   // ... you need to write this ...
+  let selectedCard = evt.target;
+  flipCard(selectedCard);
 }
+
