@@ -59,7 +59,7 @@ body {
 
 }
 
-.unclickable,
+.pauseClicking,
 .flipped {
   pointer-events: none;
 }

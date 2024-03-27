@@ -85,6 +85,7 @@ Make sure that you can not click too quickly and guess more than two cards at a 
 
 function flipCard(card) {
   // set the background color to the div color
+
   let flippedColor = card.className;
 
   card.classList.toggle("flipstyle");
@@ -112,7 +113,7 @@ function checkForMatch(card1, card2) {
   if (flipStatus === "second flip") {
 
     if (card1.className !== card2.className) {
-
+      pauseClicks();
       setTimeout(function () {
 
         unFlipCard(card1);
@@ -122,16 +123,15 @@ function checkForMatch(card1, card2) {
 
     } else {
       //freeze the matches. make editing/toggling stop
-
+      pauseClicks();
       card1.classList.add("flipped");
       card2.classList.add("flipped");
 
-      console.log("matched cards");
     }
     flipStatus = "first flip";
     firstCard = "";
     secondCard = "";
-
+    numOfActiveCards = 0;
   }
 
 }
@@ -163,43 +163,44 @@ let firstCard = "";
 
 let secondCard = "";
 
+let allowClicks = true;
 
-
-
+let cardCount = 0;
 
 function handleCardClick(evt) {
 
-  let allowClicks = true;
+  let selectedCard = evt.target;
 
-  if (allowClicks) {
-    let selectedCard = evt.target;
+  if (flipStatus === "first flip") {
 
-    if (flipStatus === "first flip") {
+    firstCard = selectedCard;
+    flipCard(selectedCard);
+    flipStatus = "second flip";
 
-      firstCard = selectedCard;
-      flipCard(selectedCard);
-      flipStatus = "second flip";
+  } else if (flipStatus === "second flip") {
 
-      allowClicks = false;
-
-    } else if (flipStatus === "second flip") {
-
-      secondCard = selectedCard;
-      flipCard(selectedCard);
-
-    }
+    secondCard = selectedCard;
+    flipCard(selectedCard);
 
   }
-  /*THIS IS NOT WORKING - want to disable clicking if 2 have been clicked
-  setTimeout(function () {
+  pauseClicks(); //this is not working as expected
 
-    allowClicks = false;
-
-  }, 1000);
-*/
 }
 
 
+function disableClicking() {
+  const gameCards = document.getElementById("game");
+  const childCards = gameCards.querySelectorAll('div');
 
+  childCards.forEach(function (card) {
+    card.classList.toggle("pauseClicking");
+  });
 
+}
 
+function pauseClicks() {
+  disableClicking();
+  setTimeout(function () {
+    disableClicking();
+  }, 500);
+}
