@@ -59,6 +59,8 @@ body {
 
 }
 
-.unclickable {
+.unclickable,
+.flipped {
   pointer-events: none;
 }
+

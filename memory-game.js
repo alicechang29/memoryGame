@@ -71,6 +71,12 @@ need to switch the css class, not the background color directly
 - 1 default css class
 https://developer.mozilla.org/en-US/docs/Web/API/DOMTokenList/toggle TOGGLE
 https://www.w3schools.com/css/css3_variables.asp
+
+
+Part 4:
+Make sure this works only if you click on two different cards — clicking the same card twice shouldn’t count as a match!
+
+Make sure that you can not click too quickly and guess more than two cards at a time.
 */
 
 
@@ -82,6 +88,7 @@ function flipCard(card) {
   let flippedColor = card.className;
 
   card.classList.toggle("flipstyle");
+  card.classList.toggle("flipped");
   card.style.setProperty('--flipColor', flippedColor);
 
   checkForMatch(firstCard, secondCard);
@@ -95,6 +102,7 @@ function flipCard(card) {
 function unFlipCard(card) {
   // reset the background color to blank
   card.classList.toggle("flipstyle");
+  card.classList.toggle("flipped");
 
 }
 
@@ -115,8 +123,8 @@ function checkForMatch(card1, card2) {
     } else {
       //freeze the matches. make editing/toggling stop
 
-      card1.classList.add("unclickable");
-      card2.classList.add("unclickable");
+      card1.classList.add("flipped");
+      card2.classList.add("flipped");
 
       console.log("matched cards");
     }
@@ -156,23 +164,42 @@ let firstCard = "";
 let secondCard = "";
 
 
+
+
+
 function handleCardClick(evt) {
-  let selectedCard = evt.target;
 
-  if (flipStatus === "first flip") {
+  let allowClicks = true;
 
-    firstCard = selectedCard;
-    flipCard(selectedCard);
-    flipStatus = "second flip";
+  if (allowClicks) {
+    let selectedCard = evt.target;
 
-  } else if (flipStatus === "second flip") {
+    if (flipStatus === "first flip") {
 
-    secondCard = selectedCard;
-    flipCard(selectedCard);
+      firstCard = selectedCard;
+      flipCard(selectedCard);
+      flipStatus = "second flip";
+
+      allowClicks = false;
+
+    } else if (flipStatus === "second flip") {
+
+      secondCard = selectedCard;
+      flipCard(selectedCard);
+
+    }
 
   }
+  /*THIS IS NOT WORKING - want to disable clicking if 2 have been clicked
+  setTimeout(function () {
 
+    allowClicks = false;
+
+  }, 1000);
+*/
 }
+
+
 
 
 
