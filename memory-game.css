@@ -1,11 +1,64 @@
 /* you can add to or change this. */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+body {
+  height: 100vh;
+  font-family: Roboto, sans-serif;
+  background: #FCFAFA;
+  margin: 25px;
+  color: #292F36;
+}
+
+.page-container{
+  display: flex;
+  justify-content: center;
+}
+
+.logo{
+  font-weight: 900;
+  font-size: 32px;
+  padding: 0 10px;
+  display: flex;
+  justify-content: center;
+  margin: 25px;
+}
+
+/* Game */
+
+.game-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 700px;
+  height: 700px;
+  margin-top: 25px;
+  margin-bottom: 50px;
+  border-color: rgb(58, 45, 45);
+  border-radius: 25px;
+  border-style: solid;
+  box-shadow: 5px 3px 3px rgb(58, 45, 45);
+}
+
+#game {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+}
 
 #game div {
   border: 1px solid black;
   width: 100px;
   height: 100px;
   margin: 20px;
-  display: inline-block;
+  display: flex;
+  flex-direction: column;
 }
 
+.flipstyle {
+  background-color: var(--flipColor);
 
+}
+
+.unclickable {
+  pointer-events: none;
+}

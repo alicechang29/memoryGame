@@ -4,8 +4,8 @@
 
 const FOUND_MATCH_WAIT_MSECS = 1000;
 const COLORS = [
-  "red", "blue", "green", "orange", "purple",
-  "red", "blue", "green", "orange", "purple",
+  "red", "blue", "green", "orange", "purple", "yellow",
+  "red", "blue", "green", "orange", "purple", "yellow"
 ];
 
 const colors = shuffle(COLORS);
@@ -47,7 +47,6 @@ function createCards(colors) {
     let card = document.createElement("div");
     card.classList.add(`${color}`);
     card.addEventListener("click", handleCardClick);
-
     gameBoard.appendChild(card);
   }
 }
@@ -66,28 +65,114 @@ You should make sure to use a setTimeout so that you can execute code after one 
 
 if a card is clicked on, set the background color of the card to the div class it has
 - how to reference the div class in javascript?
+
+need to switch the css class, not the background color directly
+- 1 css class for the background color
+- 1 default css class
+https://developer.mozilla.org/en-US/docs/Web/API/DOMTokenList/toggle TOGGLE
+https://www.w3schools.com/css/css3_variables.asp
 */
+
+
 
 /** Flip a card face-up. */
 
 function flipCard(card) {
   // set the background color to the div color
-  card.style.backgroundColor = card.className;
+  let flippedColor = card.className;
+
+  card.classList.toggle("flipstyle");
+  card.style.setProperty('--flipColor', flippedColor);
+
+  checkForMatch(firstCard, secondCard);
 
 }
 
-/** Flip a card face-down. */
+
+
+/** Flip a card face-down.*/
 
 function unFlipCard(card) {
   // reset the background color to blank
-  card.style.backgroundColor = "transparent";
+  card.classList.toggle("flipstyle");
+
 }
 
-/** Handle clicking on a card: this could be first-card or second-card. */
+
+function checkForMatch(card1, card2) {
+
+  if (flipStatus === "second flip") {
+
+    if (card1.className !== card2.className) {
+
+      setTimeout(function () {
+
+        unFlipCard(card1);
+        unFlipCard(card2);
+
+      }, 1000);
+
+    } else {
+      //freeze the matches. make editing/toggling stop
+
+      card1.classList.add("unclickable");
+      card2.classList.add("unclickable");
+
+      console.log("matched cards");
+    }
+    flipStatus = "first flip";
+    firstCard = "";
+    secondCard = "";
+
+  }
+
+}
+
+
+
+/*
+Handle clicking on a card: this could be first-card or second-card.
+ * need a way to track how many cards have been clicked - "state"
+ * if it is first card, allow for second card click
+ * if it is second card, check if it is a match
+ * -- if it is a match, leave the cards open
+ * -- if not a match, flip the cards over
+ * reset the state
+ *
+ *
+
+flipStatus:
+- first flip
+- second flip
+
+*/
+
+//Global Variables
+
+let flipStatus = "first flip";
+
+let firstCard = "";
+
+let secondCard = "";
+
 
 function handleCardClick(evt) {
-  // ... you need to write this ...
   let selectedCard = evt.target;
-  flipCard(selectedCard);
+
+  if (flipStatus === "first flip") {
+
+    firstCard = selectedCard;
+    flipCard(selectedCard);
+    flipStatus = "second flip";
+
+  } else if (flipStatus === "second flip") {
+
+    secondCard = selectedCard;
+    flipCard(selectedCard);
+
+  }
+
 }
+
+
 
