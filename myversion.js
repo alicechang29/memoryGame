@@ -30,6 +30,34 @@ function createPlayLevels() {
 
 createPlayLevels();
 
+/*
+================================================================================
+                                Score Counting
+================================================================================
+every time user clicks a card, guess count++
+
+once all cards have a class of flipped, save the max highscore
+*/
+
+//current game
+let guessCount = 0;
+
+const numOfGuesses = document.createElement("div");
+numOfGuesses.classList.add("guess-count");
+menu.appendChild(numOfGuesses);
+
+function updateGuessCount() {
+  numOfGuesses.textContent = `Total Guesses: ${guessCount}`;
+}
+
+//add a highscore count
+let highScore = 0;
+
+const highscoreContainer = document.createElement("div");
+highscoreContainer.classList.add("highscore-count");
+highscoreContainer.textContent = `Highscore: ${highScore}`;
+menu.appendChild(highscoreContainer);
+
 
 
 /*
@@ -79,7 +107,10 @@ function handleBoardSetup(evt) {
   }
   const playingCards = shuffle(randomCardSelection(deckOfCards, numOfCards)); //eg: ['KC', '2S', '4C', '7D', 'QC', '5S', '4H', '10H']
   createCards(playingCards);
+
 }
+
+
 
 /*
 ================================================================================
@@ -88,7 +119,7 @@ function handleBoardSetup(evt) {
 */
 
 const deckOfCards = [
-  "4H", "7H", "10H", "JH", "AH", "2D", "7D", "8D", "10D", "AD", "2S", "3S", "4S", "5S", "6S", "4C", "8C", "JC", "QC", "KC"
+  "4H", "7H", "8H", "JH", "AH", "2D", "7D", "8D", "KD", "AD", "2S", "3S", "4S", "5S", "6S", "4C", "8C", "JC", "QC", "KC"
 ];
 
 //https://www.deckofcardsapi.com/static/img/8D.png
@@ -138,7 +169,7 @@ function createCards(activeCards) {
     for (let cell of gridCells) {
       cell.setAttribute("card-value", activeCards[i]);
       cell.addEventListener("click", handleCardClick);
-
+      cell.classList.add("unflipped");
       i--;
     }
   }
@@ -149,8 +180,6 @@ function createCards(activeCards) {
 /*
 ================================================================================
                                 Gameplay Logic
-
-                                replace all the className with "card-value"
 ================================================================================
 */
 
@@ -200,7 +229,7 @@ function checkForMatch(card1, card2) {
 
   if (flipStatus === "second flip") {
 
-    if (card1.className !== card2.className) {
+    if (card1.getAttribute("card-value") !== card2.getAttribute("card-value")) {
       pauseClicks();
       setTimeout(function () {
 
@@ -227,7 +256,9 @@ function checkForMatch(card1, card2) {
 function handleCardClick(evt) {
 
   let selectedCard = evt.target;
-  console.log(selectedCard);
+  guessCount++;
+  updateGuessCount();
+  console.log(guessCount);
 
   if (flipStatus === "first flip") {
 
@@ -244,6 +275,24 @@ function handleCardClick(evt) {
   pauseClicks(); //this is not working as expected
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+================================================================================
+                                gotchas
+================================================================================
+*/
 
 /* Temporarily disable clicking after cards have been selected */
 
