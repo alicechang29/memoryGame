@@ -1,0 +1,114 @@
+/* you can add to or change this. */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+body {
+  height: 100vh;
+  font-family: Roboto, sans-serif;
+  background: #FCFAFA;
+  margin: 25px;
+  color: #292F36;
+}
+
+.menu{
+  height: 30vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-color: black;
+  border-style: solid;
+}
+
+.menu-buttons{
+
+  justify-content: center;
+  margin: 25px;
+  padding: 10px;
+  border-color: cyan;
+  border-style: solid;
+}
+
+button{
+  color: #292f36;
+  border: 3px solid #292f36;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1;
+  background-color: transparent;
+  padding: 10px;
+  margin: 5px;
+  outline: none;
+  border-radius: 4px;
+  font-size: 17px;
+  transition: all 0.5s ease;
+}
+
+button:hover{
+  color: white;
+  background-color: #292f36;
+  cursor: pointer;
+}
+
+.page-container{
+  display: flex;
+  justify-content: center;
+}
+
+.logo {
+  margin-top: 50px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  font-size: 2em;
+  font-weight: 400;
+  font-style: normal;
+  color: black;
+}
+
+/* Game */
+
+.game-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+#game {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  border-color: rgb(58, 45, 45);
+  border-radius: 25px;
+  border-style: solid;
+  box-shadow: 5px 3px 3px rgb(58, 45, 45);
+}
+
+#game div * {
+  border: 2px solid black;
+  width: 100px;
+  height: 150px;
+  margin: 20px;
+}
+
+.unflipped {
+  background: url(https://www.deckofcardsapi.com/static/img/back.png);
+  background-size: cover;
+  background-position: center;
+}
+
+#game div *:hover {
+  border: 2px solid red;
+  cursor: pointer;
+}
+
+.flipstyle {
+  background: var(--imgurl);
+  background-size: cover;
+  background-position: center;
+}
+
+
+.flipped {
+  pointer-events: none;
+}
+

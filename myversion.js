@@ -1,16 +1,3 @@
-/*
-allow users to select:
-- easy (12 cards)
-- medium (16 cards)
-- hard (20 cards)
-
-probably need to:
-- create a css class for each image
-- reference the css class that contains the image
-*/
-
-//create buttons and event listeners, attach it to my menu
-
 "use strict";
 
 /*
@@ -33,7 +20,7 @@ function createPlayLevels() {
     levelButton.classList.add(`${level}-button`);
     levelButton.textContent = level;
 
-    levelButton.addEventListener("click", handleLevelPlay);
+    levelButton.addEventListener("click", handleBoardSetup);
 
     levelButtons.appendChild(levelButton);
 
@@ -44,41 +31,87 @@ function createPlayLevels() {
 createPlayLevels();
 
 
-let numOfCards = 12; //this is the default value for "Easy"
-
-function handleLevelPlay(levelValue) {
-  if (levelValue === "Medium") {
-    numOfCards = 16;
-  } else if (levelValue === "Hard") {
-    numOfCards = 20;
-  }
-}
-
-//*** Need to prevent play until level is selected
 
 /*
 ================================================================================
-                                  Game Setup
+                                  Gameboard Setup
 ================================================================================
 */
 
+const gameBoard = document.querySelector("#game");
 
-/** Memory game: find matching pairs of cards and flip both of them. */
+function createGrids(column, row) {
+  for (let i = 0; i < column; i++) {
+    let column = document.createElement("div");
+    column.classList.add("grid-column");
+    for (let j = 0; j < row; j++) {
+      let gridCell = document.createElement("div");
+      gridCell.classList.add("grid-cell");
+      column.appendChild(gridCell);
+    }
+    gameBoard.appendChild(column);
+  }
+}
+createGrids();
 
-//COLORS
+function resetGrids() {
+  const removeColumns = document.getElementsByClassName("grid-column");
+  while (removeColumns.length > 0) {
+    removeColumns[0].remove(); // Remove the first column in each iteration
+  }
+}
 
-const COLORS = [
-  "red", "blue", "green", "orange", "purple", "yellow",
-  "red", "blue", "green", "orange", "purple", "yellow"
+
+
+function handleBoardSetup(evt) {
+  let numOfCards = 16;
+  let levelValue = evt.target.textContent;
+  resetGrids();
+  if (levelValue === "Easy") {
+    numOfCards = 12;
+    createGrids(4, 3);
+  } else if (levelValue === "Medium") {
+    numOfCards = 16;
+    createGrids(4, 4);
+  } else {
+    numOfCards = 20;
+    createGrids(5, 4);
+  }
+  const playingCards = shuffle(randomCardSelection(deckOfCards, numOfCards)); //eg: ['KC', '2S', '4C', '7D', 'QC', '5S', '4H', '10H']
+  createCards(playingCards);
+}
+
+/*
+================================================================================
+                                  Game Cards Setup
+================================================================================
+*/
+
+const deckOfCards = [
+  "4H", "7H", "10H", "JH", "AH", "2D", "7D", "8D", "10D", "AD", "2S", "3S", "4S", "5S", "6S", "4C", "8C", "JC", "QC", "KC"
 ];
 
-const colors = shuffle(COLORS);
+//https://www.deckofcardsapi.com/static/img/8D.png
 
-createCards(colors);
+//randomly select the cards
 
 
+function randomCardSelection(items, num) {
+  let selectedCards = [];
+  let count = num / 2;
 
-/** Shuffle array items in-place and return shuffled array. */
+  while (count > 0) {
+    let j = Math.floor(Math.random() * items.length);
+    if (!selectedCards.includes(items[j])) {
+
+      selectedCards.push(items[j]);
+      selectedCards.push(items[j]);
+      count--;
+    }
+  }
+
+  return selectedCards;
+}
 
 function shuffle(items) {
 
@@ -92,18 +125,22 @@ function shuffle(items) {
   return items;
 }
 
-/* Create card for every color in colors (each will appear twice)*/
 
-function createCards(colors) {
-  const gameBoard = document.querySelector("#game");
+function createCards(activeCards) {
+  //loop through the grid-cells
+  //assign a card to each grid-cell
 
-  for (let color of colors) {
-    //for each value in the color array, create a card (a div with class and event handler)
+  const gridCells = document.querySelectorAll("#game .grid-cell");
 
-    let card = document.createElement("div");
-    card.classList.add(`${color}`);
-    card.addEventListener("click", handleCardClick);
-    gameBoard.appendChild(card);
+  let i = activeCards.length - 1;
+
+  while (i >= 0) {
+    for (let cell of gridCells) {
+      cell.setAttribute("card-value", activeCards[i]);
+      cell.addEventListener("click", handleCardClick);
+
+      i--;
+    }
   }
 }
 
@@ -112,6 +149,8 @@ function createCards(colors) {
 /*
 ================================================================================
                                 Gameplay Logic
+
+                                replace all the className with "card-value"
 ================================================================================
 */
 
@@ -132,12 +171,16 @@ let secondCard = "";
 
 function flipCard(card) {
   // set the background color to the div color
+  let cardVal = card.getAttribute("card-value"); //"QC"
+  console.log(cardVal);
 
-  let flippedColor = card.className;
+
+  let imgURL = "url('https://www.deckofcardsapi.com/static/img/" + cardVal + ".png')";
+
 
   card.classList.toggle("flipstyle");
   card.classList.toggle("flipped");
-  card.style.setProperty('--flipColor', flippedColor);
+  card.style.setProperty('--imgurl', imgURL);
 
   checkForMatch(firstCard, secondCard);
 
@@ -176,7 +219,6 @@ function checkForMatch(card1, card2) {
     flipStatus = "first flip";
     firstCard = "";
     secondCard = "";
-    numOfActiveCards = 0;
   }
 
 }
@@ -185,6 +227,7 @@ function checkForMatch(card1, card2) {
 function handleCardClick(evt) {
 
   let selectedCard = evt.target;
+  console.log(selectedCard);
 
   if (flipStatus === "first flip") {
 
@@ -219,10 +262,4 @@ function pauseClicks() {
   setTimeout(function () {
     disableClicking();
   }, 500);
-}
-
-
-
-
-
-
+};
