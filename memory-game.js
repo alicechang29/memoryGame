@@ -1,8 +1,58 @@
+/*
+allow users to select:
+- easy (12 cards)
+- medium (16 cards)
+- hard (20 cards)
+
+probably need to:
+- create a css class for each image
+- reference the css class that contains the image
+*/
+
+//create buttons and event listeners, attach it to my menu
+
 "use strict";
+
+/*
+================================================================================
+                                  Menu Setup
+================================================================================
+*/
+
+const menu = document.querySelector(".menu");
+const levelButtons = document.createElement("div");
+levelButtons.classList.add("menu-buttons");
+
+function createPlayLevels() {
+  let levels = ["Easy", "Medium", "Hard"];
+
+  for (let level of levels) {
+
+    let levelButton = document.createElement("button");
+    levelButton.classList.add(`${level}-button`);
+    levelButton.textContent = level;
+
+    //levelButton.addEventListener("click", insert function to handle level play */);
+
+    levelButtons.appendChild(levelButton);
+
+  }
+  menu.appendChild(levelButtons);
+}
+
+createPlayLevels();
+
+
+/*
+================================================================================
+                                  Game Setup
+================================================================================
+*/
+
 
 /** Memory game: find matching pairs of cards and flip both of them. */
 
-const FOUND_MATCH_WAIT_MSECS = 1000;
+
 const COLORS = [
   "red", "blue", "green", "orange", "purple", "yellow",
   "red", "blue", "green", "orange", "purple", "yellow"
@@ -13,13 +63,10 @@ const colors = shuffle(COLORS);
 createCards(colors);
 
 
+
 /** Shuffle array items in-place and return shuffled array. */
 
 function shuffle(items) {
-  // This algorithm does a "perfect shuffle", where there won't be any
-  // statistical bias in the shuffle (many naive attempts to shuffle end up not
-  // be a fair shuffle). This is called the Fisher-Yates shuffle algorithm; if
-  // you're interested, you can learn about it, but it's not important.
 
   for (let i = items.length - 1; i > 0; i--) {
     // generate a random index between 0 and i
@@ -31,12 +78,7 @@ function shuffle(items) {
   return items;
 }
 
-/** Create card for every color in colors (each will appear twice)
- *
- * Each card is a div DOM element that will have:
- * - a class with the value of the color
- * - a click event listener for each card to handleCardClick
- */
+/* Create card for every color in colors (each will appear twice)*/
 
 function createCards(colors) {
   const gameBoard = document.querySelector("#game");
@@ -51,34 +93,25 @@ function createCards(colors) {
   }
 }
 
+
+
 /*
-Part Three: Implementing clicks and matches»
-
-Clicking a card should change the background color to be the color of the class it has.
-
-Users should only be able to change at most two cards at a time.
-
-Clicking on two matching cards should be a “match” — those cards should stay face up.
-
-When clicking two cards that are not a match, they should stay turned over for at least 1 second before they hide the color again.
-You should make sure to use a setTimeout so that you can execute code after one second.
-
-if a card is clicked on, set the background color of the card to the div class it has
-- how to reference the div class in javascript?
-
-need to switch the css class, not the background color directly
-- 1 css class for the background color
-- 1 default css class
-https://developer.mozilla.org/en-US/docs/Web/API/DOMTokenList/toggle TOGGLE
-https://www.w3schools.com/css/css3_variables.asp
-
-
-Part 4:
-Make sure this works only if you click on two different cards — clicking the same card twice shouldn’t count as a match!
-
-Make sure that you can not click too quickly and guess more than two cards at a time.
+================================================================================
+                                Gameplay Logic
+================================================================================
 */
 
+/*
+flipStatus values:
+- first flip
+- second flip
+*/
+
+let flipStatus = "first flip";
+
+let firstCard = "";
+
+let secondCard = "";
 
 
 /** Flip a card face-up. */
@@ -95,8 +128,6 @@ function flipCard(card) {
   checkForMatch(firstCard, secondCard);
 
 }
-
-
 
 /** Flip a card face-down.*/
 
@@ -137,36 +168,6 @@ function checkForMatch(card1, card2) {
 }
 
 
-
-/*
-Handle clicking on a card: this could be first-card or second-card.
- * need a way to track how many cards have been clicked - "state"
- * if it is first card, allow for second card click
- * if it is second card, check if it is a match
- * -- if it is a match, leave the cards open
- * -- if not a match, flip the cards over
- * reset the state
- *
- *
-
-flipStatus:
-- first flip
-- second flip
-
-*/
-
-//Global Variables
-
-let flipStatus = "first flip";
-
-let firstCard = "";
-
-let secondCard = "";
-
-let allowClicks = true;
-
-let cardCount = 0;
-
 function handleCardClick(evt) {
 
   let selectedCard = evt.target;
@@ -187,6 +188,7 @@ function handleCardClick(evt) {
 
 }
 
+/* Temporarily disable clicking after cards have been selected */
 
 function disableClicking() {
   const gameCards = document.getElementById("game");
@@ -204,3 +206,9 @@ function pauseClicks() {
     disableClicking();
   }, 500);
 }
+
+
+
+
+
+

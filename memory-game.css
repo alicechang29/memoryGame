@@ -8,18 +8,59 @@ body {
   color: #292F36;
 }
 
+.menu{
+  height: 30vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-color: black;
+  border-style: solid;
+}
+
+.menu-buttons{
+
+  justify-content: center;
+  margin: 25px;
+  padding: 10px;
+  border-color: cyan;
+  border-style: solid;
+}
+
+button{
+  color: #292f36;
+  border: 3px solid #292f36;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1;
+  background-color: transparent;
+  padding: 10px;
+  margin: 5px;
+  outline: none;
+  border-radius: 4px;
+  font-size: 17px;
+  transition: all 0.5s ease;
+}
+
+button:hover{
+  color: white;
+  background-color: #292f36;
+  cursor: pointer;
+}
+
 .page-container{
   display: flex;
   justify-content: center;
 }
 
-.logo{
-  font-weight: 900;
-  font-size: 32px;
-  padding: 0 10px;
-  display: flex;
-  justify-content: center;
-  margin: 25px;
+.logo {
+  margin-top: 50px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  font-size: 2em;
+  font-weight: 400;
+  font-style: normal;
+  color: black;
 }
 
 /* Game */
@@ -43,6 +84,8 @@ body {
   flex-direction: row;
   justify-content: center;
   flex-wrap: wrap;
+  border-color: red;
+  border-style: solid;
 }
 
 #game div {
