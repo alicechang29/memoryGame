@@ -26,6 +26,7 @@ function createPlayLevels() {
 
   }
   menu.appendChild(levelButtons);
+
 }
 
 createPlayLevels();
@@ -44,6 +45,7 @@ let guessCount = 0;
 
 const numOfGuesses = document.createElement("div");
 numOfGuesses.classList.add("guess-count");
+numOfGuesses.textContent = `Total Guesses: ${guessCount}`;
 menu.appendChild(numOfGuesses);
 
 function updateGuessCount() {
@@ -107,7 +109,6 @@ function handleBoardSetup(evt) {
   }
   const playingCards = shuffle(randomCardSelection(deckOfCards, numOfCards)); //eg: ['KC', '2S', '4C', '7D', 'QC', '5S', '4H', '10H']
   createCards(playingCards);
-
 }
 
 
