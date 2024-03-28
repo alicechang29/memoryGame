@@ -103,7 +103,7 @@ Play Again?
 checkGameOver needs to toggle on the modal
 */
 
-let gameOverModal; // Define variables outside of the functions
+let gameOverModal;
 const overlay = document.getElementById("overlay");
 
 function displayGameOver() {
@@ -177,7 +177,7 @@ function resetGrids() {
 
 
 function handleBoardSetup(evt) {
-  let numOfCards = 16;
+  let numOfCards = 10;
   let levelValue = evt.target.textContent;
   resetGrids();
   if (levelValue === "Easy") {

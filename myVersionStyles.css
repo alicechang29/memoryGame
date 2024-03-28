@@ -138,7 +138,8 @@ button:hover{
 }
 
 
-.flipped {
+.flipped,
+.pauseClicking {
   pointer-events: none;
 }
 
