@@ -96,6 +96,7 @@ button:hover{
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-bottom: 100px;
 
 }
 
@@ -188,3 +189,39 @@ margin: 25px;
 }
 
 
+/* Footer */
+.footer {
+  margin-top: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #4f5255;
+}
+
+.footer-links{
+  display: flex;
+  flex-direction: row;
+
+}
+.footer-links li a{
+  color: #FCFAFA;
+  padding: 25px;
+
+}
+.footer-links li:hover a{
+  color:#FFAD05;
+  cursor: pointer;
+}
+
+a,
+a:visited {
+    text-decoration: none;
+    color: #292F36;
+}
+
+ul {
+    list-style: none;
+}
