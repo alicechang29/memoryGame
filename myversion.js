@@ -15,7 +15,7 @@ function createPlayLevels() {
   let levels = ["Easy", "Medium", "Hard"];
 
   for (let level of levels) {
-    console.log(level);
+
     let levelButton = document.createElement("button");
     levelButton.classList.add(`${level}-button`);
     levelButton.textContent = level;
@@ -53,13 +53,41 @@ function updateGuessCount() {
 }
 
 //add a highscore count
-let highScore = 0;
+let bestScore = localStorage.getItem("bestScore") || Infinity;
 
-const highscoreContainer = document.createElement("div");
-highscoreContainer.classList.add("highscore-count");
-highscoreContainer.textContent = `Highscore: ${highScore}`;
-menu.appendChild(highscoreContainer);
+const bestscoreContainer = document.createElement("div");
+bestscoreContainer.classList.add("bestscore-count");
+bestscoreContainer.textContent = `Best Score: ${bestScore}`;
+menu.appendChild(bestscoreContainer);
 
+// Set Item -- needs to happen after game is over
+
+function updateBestScore() {
+  if (guessCount < bestScore) {
+    localStorage.setItem("bestScore", guessCount);
+    bestScore = guessCount;
+    bestscoreContainer.textContent = `Best Score: ${bestScore}`;
+  }
+  gameOverReset();
+}
+
+function checkGameOver() {
+  const gridCells = document.querySelectorAll("#game .grid-cell");
+
+  for (let cell of gridCells) {
+    const matchCheck = cell.getAttribute("matchStatus");
+
+    if (!matchCheck) {
+      return;
+    }
+  }
+  updateBestScore();
+}
+
+function gameOverReset() {
+  guessCount = 0;
+  updateGuessCount();
+}
 
 
 /*
@@ -202,8 +230,6 @@ let secondCard = "";
 function flipCard(card) {
   // set the background color to the div color
   let cardVal = card.getAttribute("card-value"); //"QC"
-  console.log(cardVal);
-
 
   let imgURL = "url('https://www.deckofcardsapi.com/static/img/" + cardVal + ".png')";
 
@@ -242,8 +268,14 @@ function checkForMatch(card1, card2) {
     } else {
       //freeze the matches. make editing/toggling stop
       pauseClicks();
+
       card1.classList.add("flipped");
+      card1.setAttribute("matchStatus", "matched");
+
       card2.classList.add("flipped");
+      card2.setAttribute("matchStatus", "matched");
+
+      checkGameOver();
 
     }
     flipStatus = "first flip";
@@ -259,7 +291,7 @@ function handleCardClick(evt) {
   let selectedCard = evt.target;
   guessCount++;
   updateGuessCount();
-  console.log(guessCount);
+
 
   if (flipStatus === "first flip") {
 
@@ -276,13 +308,6 @@ function handleCardClick(evt) {
   pauseClicks(); //this is not working as expected
 
 }
-
-
-
-
-
-
-
 
 
 

@@ -69,7 +69,7 @@ button:hover{
 }
 
 .guess-count,
-.highscore-count{
+.bestscore-count{
   border-color: red;
   border-style: solid;
   margin: 10px;
