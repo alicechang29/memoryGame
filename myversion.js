@@ -12,7 +12,7 @@ const levelButtons = document.createElement("div");
 levelButtons.classList.add("menu-buttons");
 
 function createPlayLevels() {
-  let levels = ["Easy", "Medium", "Hard"];
+  let levels = ["Easy", "Medium", "Hard", "Expert"];
 
   for (let level of levels) {
 
@@ -39,6 +39,7 @@ every time user clicks a card, guess count++
 
 once all cards have a class of flipped, save the max highscore
 */
+
 
 const scoreContainer = document.createElement("div");
 scoreContainer.classList.add("scores");
@@ -68,11 +69,11 @@ scoreContainer.appendChild(bestscoreContainer);
 
 function updateBestScore() {
   if (guessCount < bestScore) {
+
     localStorage.setItem("bestScore", guessCount);
     bestScore = guessCount;
     bestscoreContainer.textContent = `Best Score: ${bestScore}`;
   }
-  gameOverReset();
 }
 
 function checkGameOver() {
@@ -86,11 +87,60 @@ function checkGameOver() {
     }
   }
   updateBestScore();
+  displayGameOver();
 }
 
+/*
+gameOverReset
+- display a screen to user of guessCount and if they have a new best score
+text: Game Over
+Your Score:
+Best Score:
+
+Play Again?
+<button> that triggers gameOverReset and toggles off the modal
+
+checkGameOver needs to toggle on the modal
+*/
+
+let gameOverModal; // Define variables outside of the functions
+const overlay = document.getElementById("overlay");
+
+function displayGameOver() {
+  const pageContainer = document.querySelector(".page-container");
+  gameOverModal = document.createElement("div");
+  gameOverModal.classList.add("gameOverModal");
+
+  const gameOverLogo = document.createElement("div");
+  gameOverLogo.textContent = "Game Over";
+  gameOverLogo.classList.add("logo");
+  gameOverLogo.classList.add("gameOverLogo");
+  gameOverModal.appendChild(gameOverLogo);
+
+  gameOverModal.appendChild(scoreContainer);
+
+  const playAgainButton = document.createElement("button");
+  playAgainButton.textContent = "Play Again";
+  playAgainButton.classList.add("playAgainButton");
+  playAgainButton.addEventListener("click", gameOverReset);
+
+  gameOverModal.appendChild(playAgainButton);
+
+  pageContainer.appendChild(gameOverModal);
+
+  gameOverModal.classList.add("active");
+  overlay.classList.add("active");
+
+}
+
+
 function gameOverReset() {
+  //clear the game over modal
+  menu.appendChild(scoreContainer);
   guessCount = 0;
   updateGuessCount();
+  gameOverModal.classList.remove("active");
+  overlay.classList.remove("active");
 }
 
 
@@ -124,20 +174,22 @@ function resetGrids() {
 }
 
 
-
 function handleBoardSetup(evt) {
   let numOfCards = 16;
   let levelValue = evt.target.textContent;
   resetGrids();
   if (levelValue === "Easy") {
-    numOfCards = 8;
-    createGrids(4, 2);
+    numOfCards = 4;
+    createGrids(2, 2);
   } else if (levelValue === "Medium") {
     numOfCards = 10;
     createGrids(5, 2);
-  } else {
+  } else if (levelValue === "Hard") {
     numOfCards = 12;
     createGrids(4, 3);
+  } else {
+    numOfCards = 20;
+    createGrids(5, 4);
   }
   const playingCards = shuffle(randomCardSelection(deckOfCards, numOfCards)); //eg: ['KC', '2S', '4C', '7D', 'QC', '5S', '4H', '10H']
   createCards(playingCards);
