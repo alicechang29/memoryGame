@@ -130,14 +130,14 @@ function handleBoardSetup(evt) {
   let levelValue = evt.target.textContent;
   resetGrids();
   if (levelValue === "Easy") {
+    numOfCards = 8;
+    createGrids(4, 2);
+  } else if (levelValue === "Medium") {
+    numOfCards = 10;
+    createGrids(5, 2);
+  } else {
     numOfCards = 12;
     createGrids(4, 3);
-  } else if (levelValue === "Medium") {
-    numOfCards = 16;
-    createGrids(4, 4);
-  } else {
-    numOfCards = 20;
-    createGrids(5, 4);
   }
   const playingCards = shuffle(randomCardSelection(deckOfCards, numOfCards)); //eg: ['KC', '2S', '4C', '7D', 'QC', '5S', '4H', '10H']
   createCards(playingCards);
