@@ -40,13 +40,17 @@ every time user clicks a card, guess count++
 once all cards have a class of flipped, save the max highscore
 */
 
+const scoreContainer = document.createElement("div");
+scoreContainer.classList.add("scores");
+menu.appendChild(scoreContainer);
+
 //current game
 let guessCount = 0;
 
 const numOfGuesses = document.createElement("div");
 numOfGuesses.classList.add("guess-count");
 numOfGuesses.textContent = `Total Guesses: ${guessCount}`;
-menu.appendChild(numOfGuesses);
+scoreContainer.appendChild(numOfGuesses);
 
 function updateGuessCount() {
   numOfGuesses.textContent = `Total Guesses: ${guessCount}`;
@@ -58,7 +62,7 @@ let bestScore = localStorage.getItem("bestScore") || Infinity;
 const bestscoreContainer = document.createElement("div");
 bestscoreContainer.classList.add("bestscore-count");
 bestscoreContainer.textContent = `Best Score: ${bestScore}`;
-menu.appendChild(bestscoreContainer);
+scoreContainer.appendChild(bestscoreContainer);
 
 // Set Item -- needs to happen after game is over
 

@@ -1,12 +1,14 @@
 body {
   height: 100vh;
-  font-family: Roboto, sans-serif;
-  background: #FCFAFA;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  background:#292F36;
   margin: 25px;
-  color: #292F36;
+  color: gold;
+
 }
 
 .menu{
+  margin-top: 25px;
   height: 40vh;
   display: flex;
   flex-direction: column;
@@ -20,13 +22,12 @@ body {
   justify-content: center;
   margin: 10px;
   padding: 10px;
-  border-color: red;
-  border-style: solid;
+
 }
 
 button{
-  color: #292f36;
-  border: 3px solid #292f36;
+  color:  gold;
+  border: 3px solid rgb(177, 127, 0);
   text-transform: uppercase;
   text-align: center;
   line-height: 1;
@@ -42,12 +43,13 @@ button{
 
 button:hover{
   color: white;
-  background-color: #292f36;
+  background-color: rgb(177, 127, 0);
   cursor: pointer;
 }
 
 .page-container{
   display: flex;
+  flex-direction: row;
   justify-content: center;
 }
 
@@ -55,26 +57,37 @@ button:hover{
   margin-top: 10px;
   margin-bottom: 10px;
   text-transform: uppercase;
-  font-size: 2em;
-  font-weight: 400;
+  font-size: 2.5em;
+  font-weight: 900;
   font-style: normal;
-  color: black;
-  border-color: red;
-  border-style: solid;
+
+
 }
 
 .gameInstructions{
-  border-color: red;
-  border-style: solid;
+  margin: 10px;
+  font-size: 24px;
+}
+
+.scores{
+  border: 2px solid  rgb(177, 127, 0);
+  display: flex;
+  flex-direction: row;
+  width: 30%;
+  justify-content: center;
+  border-radius: 25px;
 }
 
 .guess-count,
 .bestscore-count{
-  border-color: red;
-  border-style: solid;
   margin: 10px;
   text-transform: uppercase;
+  padding: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  color: gold;
 }
+
 
 /* Game */
 
@@ -90,14 +103,16 @@ button:hover{
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
-  border-color: rgb(58, 45, 45);
+  border-color:  rgb(105, 89, 1);
   border-radius: 25px;
   border-style: solid;
   box-shadow: 5px 3px 3px rgb(58, 45, 45);
+  background-color: rgb(177, 127, 0);
+
 }
 
 #game div * {
-  border: 2px solid black;
+  border: 4px solid black;
   width: 100px;
   height: 150px;
   margin: 20px;
@@ -110,7 +125,7 @@ button:hover{
 }
 
 #game div *:hover {
-  border: 2px solid red;
+  border: 4px solid rgb(4, 61, 233);
   cursor: pointer;
 }
 
