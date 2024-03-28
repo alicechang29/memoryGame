@@ -171,6 +171,8 @@ function resetGrids() {
   while (removeColumns.length > 0) {
     removeColumns[0].remove(); // Remove the first column in each iteration
   }
+  guessCount = 0;
+  updateGuessCount();
 }
 
 
