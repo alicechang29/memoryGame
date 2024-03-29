@@ -112,7 +112,7 @@ function displayGameOver() {
   gameOverModal.classList.add("gameOverModal");
 
   const gameOverLogo = document.createElement("div");
-  gameOverLogo.textContent = "Game Over";
+  gameOverLogo.textContent = "You Win!";
   gameOverLogo.classList.add("logo");
   gameOverLogo.classList.add("gameOverLogo");
   gameOverModal.appendChild(gameOverLogo);
