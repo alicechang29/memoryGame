@@ -39,7 +39,7 @@ every time user clicks a card, guess count++
 
 once all cards have a class of flipped, save the max highscore
 */
-
+let currLevel = "";
 
 const scoreContainer = document.createElement("div");
 scoreContainer.classList.add("scores");
@@ -57,24 +57,65 @@ function updateGuessCount() {
   numOfGuesses.textContent = `Total Guesses: ${guessCount}`;
 }
 
-//add a highscore count
-let bestScore = localStorage.getItem("bestScore") || Infinity;
-
 const bestscoreContainer = document.createElement("div");
 bestscoreContainer.classList.add("bestscore-count");
-bestscoreContainer.textContent = `Best Score: ${bestScore}`;
+//bestscoreContainer.textContent = `Best Score: ${bestScore}`;
 scoreContainer.appendChild(bestscoreContainer);
+
+//add a highscore count
+let easyBestScore = localStorage.getItem("easyBestScore") || Infinity;
+let medBestScore = localStorage.getItem("medBestScore") || Infinity;
+let hardBestScore = localStorage.getItem("hardBestScore") || Infinity;
+let expertBestScore = localStorage.getItem("expertBestScore") || Infinity;
+
+function selectBestScore(level) {
+  if (level === "Easy") {
+    bestscoreContainer.textContent = `Best Score: ${easyBestScore}`;
+  } else if (level === "Medium") {
+    bestscoreContainer.textContent = `Best Score: ${medBestScore}`;
+  } else if (level === "Hard") {
+    bestscoreContainer.textContent = `Best Score: ${hardBestScore}`;
+  } else {
+    bestscoreContainer.textContent = `Best Score: ${expertBestScore}`;
+  }
+
+}
+
+
+//let bestScore = localStorage.getItem("bestScore") || Infinity;
 
 // Set Item -- needs to happen after game is over
 
 function updateBestScore() {
-  if (guessCount < bestScore) {
+  if (currLevel === "Easy") {
+    localStorage.setItem("easyBestScore", guessCount);
+    easyBestScore = guessCount;
+    bestscoreContainer.textContent = `Best Score: ${easyBestScore}`;
+  } else if (currLevel === "Medium") {
+    localStorage.setItem("medBestScore", guessCount);
+    medBestScore = guessCount;
+    bestscoreContainer.textContent = `Best Score: ${medBestScore}`;
+  } else if (currLevel === "Hard") {
+    localStorage.setItem("hardBestScore", guessCount);
+    hardBestScore = guessCount;
+    bestscoreContainer.textContent = `Best Score: ${hardBestScore}`;
+  } else if (currLevel === "Expert") {
+    localStorage.setItem("expertBestScore", guessCount);
+    expertBestScore = guessCount;
+    bestscoreContainer.textContent = `Best Score: ${expertBestScore}`;
+  }
+}
+console.log(currLevel);
 
+/*
+function updateBestScore() {
+  if (guessCount < bestScore) {
     localStorage.setItem("bestScore", guessCount);
     bestScore = guessCount;
     bestscoreContainer.textContent = `Best Score: ${bestScore}`;
   }
 }
+*/
 
 function checkGameOver() {
   const gridCells = document.querySelectorAll("#game .grid-cell");
@@ -150,6 +191,7 @@ function gameOverReset() {
 ================================================================================
 */
 
+
 const gameBoard = document.querySelector("#game");
 
 function createGrids(column, row) {
@@ -173,13 +215,14 @@ function resetGrids() {
   }
   guessCount = 0;
   updateGuessCount();
+  currLevel = "";
 }
-
 
 function handleBoardSetup(evt) {
   let numOfCards = 10;
   let levelValue = evt.target.textContent;
   resetGrids();
+  currLevel = levelValue;
   if (levelValue === "Easy") {
     numOfCards = 4;
     createGrids(2, 2);
@@ -193,6 +236,8 @@ function handleBoardSetup(evt) {
     numOfCards = 20;
     createGrids(5, 4);
   }
+  selectBestScore(levelValue);
+
   const playingCards = shuffle(randomCardSelection(deckOfCards, numOfCards)); //eg: ['KC', '2S', '4C', '7D', 'QC', '5S', '4H', '10H']
   createCards(playingCards);
 }
@@ -363,7 +408,7 @@ function handleCardClick(evt) {
     flipCard(selectedCard);
 
   }
-  pauseClicks(); //this is not working as expected
+  pauseClicks();
 
 }
 
