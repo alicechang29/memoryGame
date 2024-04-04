@@ -21,11 +21,7 @@ body {
 }
 
 .menu-buttons{
-
   justify-content: center;
-  margin: 10px;
-  padding: 10px;
-
 }
 
 button{
@@ -50,6 +46,11 @@ button:hover{
   cursor: pointer;
 }
 
+.active {
+  color: white;
+  background-color: rgb(177, 127, 0);
+}
+
 .page-container{
   display: flex;
   flex-direction: row;
@@ -67,6 +68,7 @@ button:hover{
 }
 
 .gameInstructions{
+  padding: 10px;
   margin: 10px;
   font-size: 24px;
 }
@@ -225,4 +227,19 @@ a:visited {
 
 ul {
     list-style: none;
+}
+
+
+.close-button{
+  position: absolute;
+  top: 5%;
+  right: 5%;
+  font-size: 2rem;
+  border-color: transparent;
+  background-color: transparent;
+}
+
+.close-button:hover{
+  background-color: transparent;
+  color: #a5a6a8;
 }

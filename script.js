@@ -59,7 +59,6 @@ function updateGuessCount() {
 
 const bestscoreContainer = document.createElement("div");
 bestscoreContainer.classList.add("bestscore-count");
-//bestscoreContainer.textContent = `Best Score: ${bestScore}`;
 scoreContainer.appendChild(bestscoreContainer);
 
 //add a highscore count
@@ -81,41 +80,29 @@ function selectBestScore(level) {
 
 }
 
-
-//let bestScore = localStorage.getItem("bestScore") || Infinity;
-
-// Set Item -- needs to happen after game is over
-
 function updateBestScore() {
-  if (currLevel === "Easy") {
+  if (currLevel === "Easy" && guessCount < easyBestScore) {
     localStorage.setItem("easyBestScore", guessCount);
     easyBestScore = guessCount;
     bestscoreContainer.textContent = `Best Score: ${easyBestScore}`;
-  } else if (currLevel === "Medium") {
+
+  } else if (currLevel === "Medium" && guessCount < medBestScore) {
     localStorage.setItem("medBestScore", guessCount);
     medBestScore = guessCount;
     bestscoreContainer.textContent = `Best Score: ${medBestScore}`;
-  } else if (currLevel === "Hard") {
+
+  } else if (currLevel === "Hard" && guessCount < hardBestScore) {
     localStorage.setItem("hardBestScore", guessCount);
     hardBestScore = guessCount;
     bestscoreContainer.textContent = `Best Score: ${hardBestScore}`;
-  } else if (currLevel === "Expert") {
+
+  } else if (currLevel === "Expert" && guessCount < expertBestScore) {
     localStorage.setItem("expertBestScore", guessCount);
     expertBestScore = guessCount;
     bestscoreContainer.textContent = `Best Score: ${expertBestScore}`;
   }
 }
-console.log(currLevel);
 
-/*
-function updateBestScore() {
-  if (guessCount < bestScore) {
-    localStorage.setItem("bestScore", guessCount);
-    bestScore = guessCount;
-    bestscoreContainer.textContent = `Best Score: ${bestScore}`;
-  }
-}
-*/
 
 function checkGameOver() {
   const gridCells = document.querySelectorAll("#game .grid-cell");
@@ -132,16 +119,9 @@ function checkGameOver() {
 }
 
 /*
-gameOverReset
-- display a screen to user of guessCount and if they have a new best score
-text: Game Over
-Your Score:
-Best Score:
-
-Play Again?
-<button> that triggers gameOverReset and toggles off the modal
-
-checkGameOver needs to toggle on the modal
+================================================================================
+                                Game Over Modal
+================================================================================
 */
 
 let gameOverModal;
@@ -160,12 +140,27 @@ function displayGameOver() {
 
   gameOverModal.appendChild(scoreContainer);
 
+  const gameLevel = document.createElement("div");
+  gameLevel.classList.add("gameInstructions");
+  gameLevel.textContent = "Select a level to play";
+  resetGameLevels();
+  gameOverModal.appendChild(gameLevel);
+  gameOverModal.appendChild(levelButtons);
+
   const playAgainButton = document.createElement("button");
   playAgainButton.textContent = "Play Again";
   playAgainButton.classList.add("playAgainButton");
   playAgainButton.addEventListener("click", gameOverReset);
 
   gameOverModal.appendChild(playAgainButton);
+
+  const closeButton = document.createElement("button");
+  closeButton.innerHTML = "&times;";
+  closeButton.classList.add("close-button");
+  closeButton.addEventListener("click", gameOverReset);
+
+  gameOverModal.appendChild(closeButton);
+
 
   pageContainer.appendChild(gameOverModal);
 
@@ -174,16 +169,23 @@ function displayGameOver() {
 
 }
 
+function resetGameLevels() {
+  const levelButtons = document.querySelectorAll(".menu-buttons button");
+
+  levelButtons.forEach(function (button) {
+    button.classList.remove("active");
+  });
+}
 
 function gameOverReset() {
   //clear the game over modal
+  menu.appendChild(levelButtons);
   menu.appendChild(scoreContainer);
   guessCount = 0;
   updateGuessCount();
   gameOverModal.classList.remove("active");
   overlay.classList.remove("active");
 }
-
 
 /*
 ================================================================================
@@ -213,15 +215,20 @@ function resetGrids() {
   while (removeColumns.length > 0) {
     removeColumns[0].remove(); // Remove the first column in each iteration
   }
+
   guessCount = 0;
   updateGuessCount();
   currLevel = "";
+
 }
 
 function handleBoardSetup(evt) {
   let numOfCards = 10;
   let levelValue = evt.target.textContent;
   resetGrids();
+
+  evt.target.classList.add("active"); //this highlights the level that was selected
+
   currLevel = levelValue;
   if (levelValue === "Easy") {
     numOfCards = 4;
@@ -248,16 +255,13 @@ function handleBoardSetup(evt) {
 ================================================================================
                                   Game Cards Setup
 ================================================================================
+
+https://www.deckofcardsapi.com/static/img/8D.png
 */
 
 const deckOfCards = [
   "4H", "7H", "8H", "JH", "AH", "2D", "7D", "8D", "KD", "AD", "2S", "3S", "4S", "5S", "6S", "4C", "8C", "JC", "QC", "KC"
 ];
-
-//https://www.deckofcardsapi.com/static/img/8D.png
-
-//randomly select the cards
-
 
 function randomCardSelection(items, num) {
   let selectedCards = [];
@@ -313,9 +317,6 @@ function createCards(activeCards) {
 ================================================================================
                                 Gameplay Logic
 ================================================================================
-*/
-
-/*
 flipStatus values:
 - first flip
 - second flip
@@ -331,7 +332,6 @@ let secondCard = "";
 /** Flip a card face-up. */
 
 function flipCard(card) {
-  // set the background color to the div color
   let cardVal = card.getAttribute("card-value"); //"QC"
 
   let imgURL = "url('https://www.deckofcardsapi.com/static/img/" + cardVal + ".png')";
@@ -414,12 +414,9 @@ function handleCardClick(evt) {
 
 
 
-
-
-
 /*
 ================================================================================
-                                gotchas
+                                During Game Play
 ================================================================================
 */
 
