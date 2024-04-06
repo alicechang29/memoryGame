@@ -82,7 +82,8 @@ button:hover{
 }
 
 .guess-count,
-.bestscore-count{
+.bestscore-count,
+.stopwatch-container{
   margin: 10px;
   text-transform: uppercase;
   padding: 10px;
@@ -243,3 +244,4 @@ ul {
   background-color: transparent;
   color: #a5a6a8;
 }
+

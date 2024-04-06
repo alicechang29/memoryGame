@@ -28,9 +28,7 @@ function createPlayLevels() {
   menu.appendChild(levelButtons);
 
 }
-
 createPlayLevels();
-
 /*
 ================================================================================
                                 Score Counting
@@ -43,14 +41,13 @@ let currLevel = "";
 
 const scoreContainer = document.createElement("div");
 scoreContainer.classList.add("scores");
-menu.appendChild(scoreContainer);
+//menu.appendChild(scoreContainer);
 
 //current game
 let guessCount = 0;
 
 const numOfGuesses = document.createElement("div");
 numOfGuesses.classList.add("guess-count");
-numOfGuesses.textContent = `Total Guesses: ${guessCount}`;
 scoreContainer.appendChild(numOfGuesses);
 
 function updateGuessCount() {
@@ -116,7 +113,52 @@ function checkGameOver() {
   }
   updateBestScore();
   displayGameOver();
+  gamePlayStatus = false;
+
 }
+
+/*
+================================================================================
+                                Stopwatch
+================================================================================
+*/
+
+const stopwatch = document.createElement("div");
+stopwatch.setAttribute("id", "stopwatchId");
+stopwatch.classList.add("stopwatch-container");
+
+scoreContainer.appendChild(stopwatch);
+
+let timeElapsed = -1; //this should update every 1000 ms
+
+let gamePlayStatus = false;
+let timer;
+
+function updateTimer() {
+
+  clearInterval(timer);
+
+  timer = setInterval(function () {
+    if (gamePlayStatus) { //if the game is ongoing, add 1 to timeElapsed every 1 second
+      timeElapsed++;
+      stopwatch.textContent = `Time: ${timeElapsed}`;
+      //stopwatch.textContent = timeElapsed;
+    } else {
+      clearInterval(timer); //else stop adding
+    }
+  }, 1000);
+
+}
+
+function setupTimer() {
+  timeElapsed = -1;
+  gamePlayStatus = true;
+  updateTimer();
+}
+
+
+
+
 
 /*
 ================================================================================
@@ -183,8 +225,11 @@ function gameOverReset() {
   menu.appendChild(scoreContainer);
   guessCount = 0;
   updateGuessCount();
+  gamePlayStatus = true;
+  timeElapsed = 0;
   gameOverModal.classList.remove("active");
   overlay.classList.remove("active");
+
 }
 
 /*
@@ -219,7 +264,8 @@ function resetGrids() {
   guessCount = 0;
   updateGuessCount();
   currLevel = "";
-
+  setupTimer();
+  menu.appendChild(scoreContainer);
 }
 
 function handleBoardSetup(evt) {
@@ -395,7 +441,6 @@ function handleCardClick(evt) {
   guessCount++;
   updateGuessCount();
 
-
   if (flipStatus === "first flip") {
 
     firstCard = selectedCard;
@@ -437,4 +482,4 @@ function pauseClicks() {
   setTimeout(function () {
     disableClicking();
   }, 500);
-};
+};;
